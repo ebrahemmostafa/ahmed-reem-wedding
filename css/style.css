@@ -429,81 +429,13 @@ ol { padding: 0; list-style: none; }
 }
 
 /* ==========================================================
-   Free-flowing panels (verse, photos, RSVP)
+   Free-flowing panels (photos, RSVP)
    ========================================================== */
 .panel {
   position: relative;
   padding: calc(var(--u) * 16) calc(var(--u) * 8);
   text-align: center;
 }
-
-/* ---------- verse + invitation ---------- */
-.verse {
-  min-height: 100vh;
-  min-height: 100svh;
-  padding-top: calc(var(--u) * 14 + env(safe-area-inset-top));
-  font-family: var(--arabic);
-  background: var(--paper);
-}
-.verse__bg {
-  position: absolute;
-  inset: 0 0 auto 0;
-  height: 100vh;
-  height: 100svh;
-  background: url("../assets/img/arch-sunset.jpg") center / cover no-repeat;
-}
-.verse__bg::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(to bottom,
-    rgba(247, 240, 230, .8) 0%,
-    rgba(247, 240, 230, .88) 55%,
-    var(--paper) 100%);
-  opacity: 0;
-  transition: opacity 1.4s ease;
-}
-.verse__content {
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-.verse__content > * {
-  opacity: 0;
-  transform: translateY(10px);
-  transition: opacity 1s ease, transform 1s ease;
-}
-.is-revealed .verse__bg::after { opacity: 1; }
-.is-revealed .verse__content > * { opacity: 1; transform: none; }
-.is-revealed .verse__content > :nth-child(1) { transition-delay: .5s; }
-.is-revealed .verse__content > :nth-child(2) { transition-delay: 1s; }
-.is-revealed .verse__content > :nth-child(3) { transition-delay: 1.6s; }
-.is-revealed .verse__content > :nth-child(4) { transition-delay: 1.9s; }
-
-.basmala { font-size: 1.15rem; color: var(--gold); }
-.ayah { margin: calc(var(--u) * 5) 0 calc(var(--u) * 2); }
-.ayah img { width: min(92%, 360px); height: auto; margin-inline: auto; }
-.ayah figcaption { margin-top: calc(var(--u) * 2); font-size: .95rem; color: var(--ink-2); }
-.verse .sprig { margin-block: calc(var(--u) * 3) calc(var(--u) * 4); }
-
-.invite { font-size: 1.25rem; line-height: 2; color: var(--walnut); }
-.invite > p + p,
-.invite > p + div,
-.invite > div + p { margin-top: calc(var(--u) * 3.6); }
-.invite strong { font-weight: 700; }
-.invite__families { font-size: 1.3rem; }
-.blank { display: inline-block; min-width: 7.5em; color: var(--gold); letter-spacing: .05em; }
-.invite__couple { margin-block: calc(var(--u) * 1.5); }
-.invite__role { font-size: 1.05rem; color: var(--ink-2); }
-.invite__name {
-  font-family: var(--ruqaa);
-  font-size: 2.6rem;
-  line-height: 1.45;
-  color: #8C6A3A;
-}
-.invite__closing { font-family: var(--ruqaa); font-size: 1.4rem; color: #8C6A3A; }
-.latin { font-family: var(--serif); font-weight: 400; font-size: 1.15em; }
 
 /* ---------- couple photos ---------- */
 .photo { background: linear-gradient(var(--paper), var(--paper-2)); }
