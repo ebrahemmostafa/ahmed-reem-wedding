@@ -4,7 +4,7 @@
    limited by the row-level security rules in supabase/setup.sql
    (guests can only add an RSVP; only a signed-in user can read them). */
 window.SUPABASE_CONFIG = {
-  url: '',      // e.g. 'https://abcdefghijkl.supabase.co'
-  anonKey: '',  // the "anon" / "publishable" key
+  url: 'https://mjbcwjoxjwrkrozdukoj.supabase.co',
+  anonKey: 'sb_publishable_Hh56qew_AQE5uf_BafmsPg_plwR0pD0',   // publishable key: safe to be public
   table: 'ar_wedding_rsvps',
 };
