@@ -1,6 +1,6 @@
 /* ==========================================================
    Ahmed & Reem — RSVP list (ahmed-reem-rsvp.html)
-   The passcode is checked inside Supabase (get_rsvps / delete_rsvp
+   The passcode is checked inside Supabase (ar_wedding_get_rsvps / ar_wedding_delete_rsvp
    in supabase/setup.sql); it is never stored in this code.
    ========================================================== */
 
@@ -90,7 +90,7 @@ async function unlock(code, { silent = false } = {}) {
   els.btn.disabled = true;
   if (!silent) setStatus(els.signinStatus, 'Checking…');
   try {
-    const data = await rpc('get_rsvps', { p_passcode: code });
+    const data = await rpc('ar_wedding_get_rsvps', { p_passcode: code });
     if (!data.ok) {
       remember('');
       setStatus(els.signinStatus, silent ? '' : (ERRORS[data.error] || "Couldn't open the replies."), 'error');
@@ -117,7 +117,7 @@ async function load({ quiet = false } = {}) {
   if (!passcode) return;
   if (!quiet) setStatus(els.listStatus, 'Loading replies…');
   try {
-    const data = await rpc('get_rsvps', { p_passcode: passcode });
+    const data = await rpc('ar_wedding_get_rsvps', { p_passcode: passcode });
     if (!data.ok) { lock(ERRORS[data.error]); return; }
     rows = data.rows || [];
     if (!quiet) setStatus(els.listStatus, '');
@@ -180,7 +180,7 @@ function render() {
 async function removeRow(r) {
   if (!confirm(`Delete the RSVP from ${r.full_name}? This can't be undone.`)) return;
   try {
-    const data = await rpc('delete_rsvp', { p_passcode: passcode, p_id: r.id });
+    const data = await rpc('ar_wedding_delete_rsvp', { p_passcode: passcode, p_id: r.id });
     if (!data.ok) { lock(ERRORS[data.error]); return; }
     rows = rows.filter((x) => x.id !== r.id);
     setStatus(els.listStatus, `Deleted the RSVP from ${r.full_name}.`, 'ok');

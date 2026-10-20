@@ -9,17 +9,15 @@ A one-page, phone-first wedding invitation. It is a static site (HTML, CSS and J
 1. **The door.** The design's door with rose petals falling. Tapping **Open** starts the music and plays the door-opening video, which ends on the names page.
 2. **Ahmed & Reem**, *invite you to celebrate our forever*.
 3. **Our story**, with leaves and rose petals falling over the picture.
-4. The couple's first photo.
-5. *Two souls, one story, a lifetime together.*
-6. **The countdown**, live until 10 Nov 2026, 8:00 PM (Cairo time).
-7. **The big day**: date, time and venue.
-8. **The venue**, with a button that opens the location in Google Maps.
-9. **Dress code** and the gift note.
-10. The couple's second photo.
-11. **See you there.**
-12. **RSVP**: full name and a message.
+4. *Two souls, one story, a lifetime together.*
+5. **The countdown**, live until 10 Nov 2026, 8:00 PM (Cairo time).
+6. **The big day**: date, time and venue.
+7. **The venue**, with a button that opens the location in Google Maps.
+8. The couple's photo.
+9. **See you there.**
+10. **RSVP**: full name and a message.
 
-The design panels (2, 3, 5–9, 11) recreate the approved design exactly. Each one keeps the design's proportions, and its text sits at the same position and size on every phone.
+The design panels (2–7, 9) recreate the approved design exactly. Each one keeps the design's proportions, and its text sits at the same position and size on every phone.
 
 ## Things to fill in
 
@@ -31,11 +29,11 @@ RSVPs are saved in a Supabase table and listed on **`ahmed-reem-rsvp.html`**, wh
 3. Go to **Project Settings → API** and copy the **Project URL** and the **anon / publishable** key into [`js/supabase-config.js`](js/supabase-config.js).
 4. Commit and push.
 
-**Who can see what:** guests can only *add* an RSVP. The table can't be read directly. The RSVP page asks Supabase for the list with the passcode, which is checked on the server against a bcrypt hash. Wrong tries are limited: 10 per device and 30 in total every 15 minutes, and 100 in total per day. Past that, the page stops answering until the window passes. If it ever stays locked for you, run `delete from public.rsvp_failed_attempts;` in the SQL Editor. The anon key in the code can't read anyone's message.
+**Who can see what:** guests can only *add* an RSVP. The table can't be read directly. The RSVP page asks Supabase for the list with the passcode, which is checked on the server against a bcrypt hash. Wrong tries are limited: 10 per device and 30 in total every 15 minutes, and 100 in total per day. Past that, the page stops answering until the window passes. If it ever stays locked for you, run `delete from public.ar_wedding_failed_attempts;` in the SQL Editor. The anon key in the code can't read anyone's message.
 
 To change the passcode later, run this in the SQL Editor:
 ```sql
-update public.rsvp_secret
+update public.ar_wedding_secret
 set passcode_hash = extensions.crypt('NEW-PASSCODE', extensions.gen_salt('bf'))
 where id = 1;
 ```
@@ -62,7 +60,7 @@ In the repository, go to **Settings → Pages**. Under *Build and deployment*, c
 | `assets/img/door.jpg`, `monogram.png` | The closed door (the video's first frame) and the swash "AR" monogram |
 | `assets/audio/music.mp3` | Background music, looped |
 | `assets/img/panels/` | HD background pictures, regenerated in Google Flow from the design's panels. `names.jpg` is the video's last frame and includes the AHMED & REEM lettering |
-| `assets/img/couple-1.jpg`, `couple-2.jpg` | The couple's photos |
+| `assets/img/couple-2.jpg` | The couple's photo |
 
 ### Replacing a panel picture
 Each panel background is an HD image (Nano Banana in Google Flow), generated from the matching panel of the design and cropped to that panel's shape. To swap one, save the new picture over the file with the same name in `assets/img/panels/`. Keep the same composition, because the text is placed to match it.

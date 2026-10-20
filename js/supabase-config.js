@@ -6,5 +6,5 @@
 window.SUPABASE_CONFIG = {
   url: '',      // e.g. 'https://abcdefghijkl.supabase.co'
   anonKey: '',  // the "anon" / "publishable" key
-  table: 'rsvps',
+  table: 'ar_wedding_rsvps',
 };
