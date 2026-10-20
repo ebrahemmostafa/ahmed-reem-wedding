@@ -34,45 +34,19 @@
         <path d="M21.6 5.8 C23.6 7.6 26.2 8 28.4 7 C26.4 5.6 24 5.4 21.6 5.8Z"/>
       </g>
     </symbol>
-    <!-- swash A and R traced from the design -->
-    <g id="glyph-a" fill="none" stroke="currentColor" stroke-linecap="round">
-      <path stroke-width=".6" d="M62.5 107.5 C58 113 55.5 124 55.5 135 C55.5 146 59 152.5 64 152.5 C66 152.5 67.5 151.5 68.5 150"/>
-      <path stroke-width="1.4" stroke-linecap="butt" d="M60.5 110.5 C59.6 112 59 113.5 58.6 115"/>
-      <path stroke-width="2.4" stroke-linecap="butt" d="M58.6 115 C56.4 123 55.6 129 55.6 135 C55.6 141 56.4 145 58 148"/>
-      <path stroke-width="1.4" stroke-linecap="butt" d="M58 148 C59 150 60.5 151.6 62.5 152.2"/>
-      <path stroke-width=".6" d="M62 107.5 C54 115 46 126 40 137 C35 146 30 152 24 154 C19 155 16.5 151 17.5 147.5 C18.5 143 23 139.5 27 139.5 C28.5 139.5 29.6 140.2 30.3 141"/>
-      <path stroke-width=".55" d="M34 132.2 C42 131.8 52 131.5 66 131.5"/>
-    </g>
-    <g id="glyph-r" fill="none" stroke="currentColor" stroke-linecap="round">
-      <path stroke-width=".6" d="M66.5 160 C63.5 170 60 182 53 190.5 C48 196 41 197.8 36 195.5 C32.5 193.6 32.3 188.5 35.5 185.8 C38 184 41 184.6 42.3 186.3"/>
-      <path stroke-width="1.4" stroke-linecap="butt" d="M65.8 162.5 L64.6 166"/>
-      <path stroke-width="2.4" stroke-linecap="butt" d="M64.6 166 C63 172 61.5 178 58.5 184"/>
-      <path stroke-width="1.4" stroke-linecap="butt" d="M58.5 184 C57 187 55.6 189 54 190.5"/>
-      <path stroke-width=".6" d="M66.5 160 C71 158.6 76.5 160.5 76.8 166.5 C77 172.5 71.5 177.6 63.5 178"/>
-      <path stroke-width="2" stroke-linecap="butt" d="M76.4 163 C77.2 166 77 169.5 75.6 172"/>
-      <path stroke-width=".6" d="M64.5 178 C68 183 71 190 75 195 C78 198.6 82 200.2 86 200 C87.5 199.9 89 199.4 90 199"/>
-      <path stroke-width="2.2" stroke-linecap="butt" d="M67.2 181.5 C69.5 186 71.6 190.5 74.4 194.4"/>
-      <path stroke-width=".6" d="M74 157.2 C66 154.6 55 154.8 47.5 159.5 C42 163 40 169 42.5 173.8 C45 177.6 51 177.6 53.8 174.2 C55.6 172 55.3 169.3 53.2 168.4"/>
-    </g>
   </svg>
 
   <!-- ============ INTRO: the door (panel 1) ============ -->
   <div class="intro" id="intro">
     <div class="stage">
-      <video class="intro__video intro__video--idle" id="door-idle"
-             src="assets/video/door-idle.mp4" poster="assets/img/door-poster.jpg"
-             autoplay muted loop playsinline preload="auto" aria-hidden="true"></video>
+      <img class="intro__video intro__door" src="assets/img/door.jpg" alt="" aria-hidden="true">
+      <canvas class="intro__petals" id="intro-petals" aria-hidden="true"></canvas>
       <video class="intro__video intro__video--open" id="door-open"
              src="assets/video/door-open.mp4"
              muted playsinline preload="auto" aria-hidden="true"></video>
 
       <div class="intro__ui" id="intro-ui">
-        <svg class="monogram" viewBox="12 103 86 78" aria-hidden="true">
-          <use href="#glyph-a"/>
-          <use href="#glyph-r" transform="translate(6 -22)"/>
-          <use href="#sprig" x="64" y="118" width="20" height="6" transform="rotate(-22 74 121)" class="monogram__sprig"/>
-          <use href="#sprig" x="70" y="152" width="22" height="6.6" transform="rotate(-30 81 155)" class="monogram__sprig"/>
-        </svg>
+        <img class="monogram" src="assets/img/monogram.png" width="476" height="444" alt="" aria-hidden="true">
         <p class="intro__tagline">To a<br>beautiful<br>beginning</p>
 
         <div class="intro__bottom">
@@ -99,18 +73,6 @@
 
     <!-- ============ Panel 2: names ============ -->
     <section class="ref ref--names" id="names" aria-label="Ahmed and Reem invite you to celebrate our forever">
-      <!-- traced from the design: swash A and R, Cormorant capitals -->
-      <svg class="names" viewBox="0 100 170 105" aria-hidden="true">
-        <g>
-          <use href="#glyph-a"/>
-          <use href="#glyph-r"/>
-        </g>
-        <g class="names__type" fill="currentColor">
-          <text x="65" y="143.2" font-size="32.5" textLength="76" lengthAdjust="spacingAndGlyphs">HMED</text>
-          <text x="93" y="166.5" font-size="25" font-style="italic" text-anchor="middle">&amp;</text>
-          <text x="80" y="194" font-size="34" textLength="48.5" lengthAdjust="spacingAndGlyphs">EEM</text>
-        </g>
-      </svg>
       <h1 class="ref-caps names__tagline">Invite you to<br>celebrate our<br>forever</h1>
       <a class="names__scroll" href="#story">Scroll</a>
     </section>

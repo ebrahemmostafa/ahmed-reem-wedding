@@ -69,7 +69,6 @@ document.addEventListener('visibilitychange', () => {
 /* Intro: the door                                             */
 /* ---------------------------------------------------------- */
 const intro = $('#intro');
-const doorIdle = $('#door-idle');
 const doorOpen = $('#door-open');
 const openBtn = $('#open-btn');
 const skipBtn = $('#skip-btn');
@@ -105,8 +104,8 @@ function finishIntro() {
   musicToggle.hidden = false;
 
   setTimeout(() => {
-    doorIdle.pause();
     doorOpen.pause();
+    introPetals.stop();
     intro.hidden = true;
   }, 1300);
 }
@@ -143,20 +142,21 @@ if (tick()) {
 }
 
 /* ---------------------------------------------------------- */
-/* Leaves and petals falling over "Our story"                  */
+/* Falling leaves and petals: "Our story" and the closed door   */
 /* ---------------------------------------------------------- */
-(function leaves() {
-  const canvas = $('#leaves');
+const LEAVES_AND_PETALS = [
+  { fill: '#8E9B6E', rib: '#6F7C52', kind: 'leaf' },   // eucalyptus
+  { fill: '#A7B08A', rib: '#848E66', kind: 'leaf' },   // sage
+  { fill: '#C9A86A', rib: '#A9894E', kind: 'leaf' },   // gold
+  { fill: '#FFFDF7', rib: '#EADFCB', kind: 'petal' },  // white petal
+  { fill: '#FFFDF7', rib: '#EADFCB', kind: 'petal' },  // white petal
+  { fill: '#F6E7DF', rib: '#E6CFC3', kind: 'petal' },  // blush petal
+];
+const PETALS_ONLY = LEAVES_AND_PETALS.filter((c) => c.kind === 'petal');
+
+function makeFalling(canvas, COLORS, density = 11000) {
   const ctx = canvas.getContext('2d');
   const section = canvas.parentElement;
-  const COLORS = [
-    { fill: '#8E9B6E', rib: '#6F7C52', kind: 'leaf' },   // eucalyptus
-    { fill: '#A7B08A', rib: '#848E66', kind: 'leaf' },   // sage
-    { fill: '#C9A86A', rib: '#A9894E', kind: 'leaf' },   // gold
-    { fill: '#FFFDF7', rib: '#EADFCB', kind: 'petal' },  // white petal
-    { fill: '#FFFDF7', rib: '#EADFCB', kind: 'petal' },  // white petal
-    { fill: '#F6E7DF', rib: '#E6CFC3', kind: 'petal' },  // blush petal
-  ];
   let w = 0, h = 0, dpr = 1, items = [], running = false, last = 0, raf;
 
   function resize() {
@@ -166,7 +166,7 @@ if (tick()) {
     canvas.width = w * dpr;
     canvas.height = h * dpr;
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-    const count = Math.round(Math.min(42, Math.max(20, (w * h) / 11000)));
+    const count = Math.round(Math.min(42, Math.max(14, (w * h) / density)));
     while (items.length < count) items.push(spawn(true));
     items.length = count;
   }
@@ -266,12 +266,17 @@ if (tick()) {
 
   if (reducedMotion) {          // a still scatter, no movement
     frame(performance.now());
-    return;
+    return { stop() {} };
   }
-  new IntersectionObserver(([entry]) => {
+  const io = new IntersectionObserver(([entry]) => {
     entry.isIntersecting ? start() : stop();
-  }, { rootMargin: '100px' }).observe(section);
-})();
+  }, { rootMargin: '100px' });
+  io.observe(section);
+  return { stop() { io.disconnect(); stop(); } };
+}
+
+makeFalling($('#leaves'), LEAVES_AND_PETALS);
+const introPetals = makeFalling($('#intro-petals'), PETALS_ONLY, 16000);
 
 /* ---------------------------------------------------------- */
 /* RSVP                                                        */

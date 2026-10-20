@@ -123,21 +123,15 @@ ol { padding: 0; list-style: none; }
 }
 
 /* ---------- Panel 2: names ---------- */
-.ref--names { aspect-ratio: 170 / 457; background-image: url("../assets/img/panels/names.jpg"); }
-.names {
-  --y: 33.37;                              /* design y 100–205 of 457 */
-  width: 100%;
-  height: auto;
-  aspect-ratio: 170 / 105;
-  color: #6A4F3D;
-  overflow: visible;
-}
-.names__type {
-  font-family: var(--serif);
-  font-weight: 400;
+/* full-screen, cropped like the door video so the hand-off is seamless;
+   the AHMED & REEM lettering is part of the picture */
+.ref--names {
+  min-height: 100vh;
+  min-height: 100svh;
+  background-image: url("../assets/img/panels/names.jpg");
 }
 .names__tagline {
-  --y: 49.9;
+  --y: 55.6;
   font-size: calc(var(--u) * 4.6);
   line-height: 1.66;
   letter-spacing: .22em;
@@ -560,14 +554,17 @@ ol { padding: 0; list-style: none; }
     linear-gradient(to top, rgba(40, 26, 18, .5), transparent 30%);
 }
 .monogram {
-  width: calc(var(--u) * 50);
+  width: calc(var(--u) * 44);
   height: auto;
-  aspect-ratio: 86 / 78;
-  color: #FBEFD9;
-  overflow: visible;
   filter: drop-shadow(0 2px 10px rgba(0, 0, 0, .45));
 }
-.monogram__sprig { color: #E2C58F; }
+.intro__petals {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
 .intro__tagline {
   margin-top: calc(var(--u) * 6);
   font: 400 calc(var(--u) * 4.4) / 2 var(--caps);

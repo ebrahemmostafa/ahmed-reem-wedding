@@ -6,7 +6,7 @@ A one-page, phone-first wedding invitation. It is a static site (HTML, CSS and J
 
 ## What guests see
 
-1. **The door.** A looping closed-door video. Tapping **Open** starts the music and plays the door-opening video.
+1. **The door.** The design's door with rose petals falling. Tapping **Open** starts the music and plays the door-opening video, which ends on the names page.
 2. **Ahmed & Reem**, *invite you to celebrate our forever*.
 3. **Our story**, with leaves and rose petals falling over the picture.
 4. The couple's first photo.
@@ -51,9 +51,10 @@ In the repository, go to **Settings → Pages**. Under *Build and deployment*, c
 | `css/style.css` | All styling |
 | `js/main.js` | Door intro, music, countdown, falling leaves, RSVP |
 | `rsvp/Code.gs` | Google Apps Script that writes RSVPs to a Sheet |
-| `assets/video/` | `door-idle.mp4` (closed-door loop), `door-open.mp4` (doors opening) |
+| `assets/video/door-open.mp4` | The design's door opening onto the names page (Veo 3.1 in Google Flow) |
+| `assets/img/door.jpg`, `monogram.png` | The closed door (the video's first frame) and the swash "AR" monogram |
 | `assets/audio/music.mp3` | Background music, looped |
-| `assets/img/panels/` | HD background pictures, regenerated in Google Flow from the design's panels, with no text |
+| `assets/img/panels/` | HD background pictures, regenerated in Google Flow from the design's panels. `names.jpg` is the video's last frame and includes the AHMED & REEM lettering |
 | `assets/img/couple-1.jpg`, `couple-2.jpg` | The couple's photos |
 
 ### Replacing a panel picture
@@ -66,4 +67,4 @@ python -m http.server 5173
 Then open http://localhost:5173.
 
 ## Fonts
-They match the design: **Cinzel** for spaced capitals, **Cormorant Garamond** for "AHMED & REEM" and the numbers, **EB Garamond** for body text, and **Corinthia** for the script headings. The A and R swashes were traced from the design. The Arabic RSVP labels use **Amiri**.
+They match the design: **Cinzel** for spaced capitals, **Cormorant Garamond** for "AHMED & REEM" and the numbers, **EB Garamond** for body text, and **Corinthia** for the script headings. The AHMED & REEM lettering and the AR monogram come from the regenerated design artwork. The Arabic RSVP labels use **Amiri**.
