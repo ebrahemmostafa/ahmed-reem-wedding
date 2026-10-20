@@ -6,7 +6,7 @@ A one-page, phone-first wedding invitation. It is a static site (HTML, CSS and J
 
 ## What guests see
 
-1. **The door.** The design's door with rose petals falling. Tapping **Open** starts the music and plays the door-opening video, which ends on the names page.
+1. **The door.** The design's door with rose petals falling. Tapping **Open** starts the music and plays the door-opening video, which ends on the names page. Four seconds later the invitation starts scrolling down on its own to the RSVP. A touch or scroll pauses it, it resumes after 4 seconds, and typing in the RSVP stops it. Change the timing with `autoScrollDelay` and `autoScrollSpeed` in `js/main.js`.
 2. **Ahmed & Reem**, *invite you to celebrate our forever*.
 3. **Our story**, with leaves and rose petals falling over the picture.
 4. *Two souls, one story, a lifetime together.*

@@ -7,6 +7,10 @@ const CONFIG = {
   weddingDate: '2026-11-10T20:00:00+02:00',
 
   musicVolume: 0.6,
+
+  // Auto-scroll after the door opens: wait, then glide down to the RSVP.
+  autoScrollDelay: 4000,   // ms before it starts (and before it resumes after a touch)
+  autoScrollSpeed: 55,     // px per second
 };
 
 const $ = (sel, root = document) => root.querySelector(sel);
@@ -104,7 +108,63 @@ function finishIntro() {
     introPetals.stop();
     intro.hidden = true;
   }, 1300);
+
+  autoScroll.start();
 }
+
+/* ---------------------------------------------------------- */
+/* Auto-scroll: glides down the invitation on its own.          */
+/* A touch, wheel or key pauses it; it resumes after the delay. */
+/* It stops for good at the RSVP or once the guest types there. */
+/* ---------------------------------------------------------- */
+const autoScroll = (() => {
+  const stopAt = () => {
+    const rsvp = document.getElementById('rsvp');
+    const max = document.documentElement.scrollHeight - window.innerHeight;
+    return rsvp ? Math.min(max, rsvp.getBoundingClientRect().top + window.scrollY) : max;
+  };
+  let raf = 0, timer = 0, last = 0, pos = 0, done = false;
+
+  function step(now) {
+    // moved by something else (scrollbar drag, link, find-in-page): treat it as the guest's scroll
+    if (Math.abs(window.scrollY - pos) > 3) { pause(); return; }
+    const dt = Math.min(0.05, (now - last) / 1000);
+    last = now;
+    const target = stopAt();
+    pos = Math.min(target, pos + CONFIG.autoScrollSpeed * dt);
+    window.scrollTo({ top: pos, behavior: 'instant' });
+    if (pos >= target - 1) { finish(); return; }
+    raf = requestAnimationFrame(step);
+  }
+  function run() {
+    if (done) return;
+    cancelAnimationFrame(raf);
+    pos = window.scrollY;
+    last = performance.now();
+    raf = requestAnimationFrame(step);
+  }
+  function pause() {
+    if (done) return;
+    cancelAnimationFrame(raf);
+    clearTimeout(timer);
+    timer = setTimeout(run, CONFIG.autoScrollDelay);
+  }
+  function finish() {
+    done = true;
+    cancelAnimationFrame(raf);
+    clearTimeout(timer);
+    ['wheel', 'touchstart', 'pointerdown', 'keydown'].forEach((t) => window.removeEventListener(t, pause));
+  }
+  return {
+    start() {
+      if (reducedMotion || done) return;
+      ['wheel', 'touchstart', 'pointerdown', 'keydown'].forEach((t) => window.addEventListener(t, pause, { passive: true }));
+      document.getElementById('rsvp-form')?.addEventListener('focusin', finish);
+      document.addEventListener('visibilitychange', () => { if (document.hidden) pause(); });
+      timer = setTimeout(run, CONFIG.autoScrollDelay);
+    },
+  };
+})();
 
 /* ---------------------------------------------------------- */
 /* Countdown                                                   */
