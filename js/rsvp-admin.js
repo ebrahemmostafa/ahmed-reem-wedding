@@ -193,7 +193,8 @@ async function removeRow(r) {
 function exportCsv() {
   const cell = (v) => {
     let s = String(v ?? '');
-    if (/^[=+\-@]/.test(s)) s = "'" + s;         // keep spreadsheets from running it as a formula
+    // keep spreadsheets from running it as a formula (incl. leading spaces/tabs and fullwidth forms)
+    if (/^\s*[=+\-@\t\r\uFF1D\uFF0B\uFF0D\uFF20]/.test(s)) s = "'" + s;
     return '"' + s.replace(/"/g, '""') + '"';
   };
   const lines = [['Time (Cairo)', 'Full name', 'Message'].map(cell).join(',')];
