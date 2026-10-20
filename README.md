@@ -8,10 +8,10 @@ A one-page, phone-first wedding invitation. It is a static site (HTML, CSS and J
 
 1. **The door.** A looping closed-door video. Tapping **Open** starts the music and plays the door-opening video.
 2. **Ahmed & Reem**, *invite you to celebrate our forever*.
-3. The couple's first photo.
-4. *Two souls, one story, a lifetime together.*
-5. **The countdown**, live until 10 Nov 2026, 8:00 PM (Cairo time).
-6. **Our story**, with leaves and rose petals falling over the picture.
+3. **Our story**, with leaves and rose petals falling over the picture.
+4. The couple's first photo.
+5. *Two souls, one story, a lifetime together.*
+6. **The countdown**, live until 10 Nov 2026, 8:00 PM (Cairo time).
 7. **The big day**: date, time and venue.
 8. **The venue**, with a button that opens the location in Google Maps.
 9. **Dress code** and the gift note.
@@ -19,7 +19,7 @@ A one-page, phone-first wedding invitation. It is a static site (HTML, CSS and J
 11. **See you there.**
 12. **RSVP**: full name and a message.
 
-The design panels (2, 4–9, 11) recreate the approved design exactly. Each one keeps the design's proportions, and its text sits at the same position and size on every phone.
+The design panels (2, 3, 5–9, 11) recreate the approved design exactly. Each one keeps the design's proportions, and its text sits at the same position and size on every phone.
 
 ## Things to fill in
 
