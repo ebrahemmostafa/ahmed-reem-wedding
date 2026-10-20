@@ -6,10 +6,6 @@ const CONFIG = {
   // Egypt is UTC+2 in November
   weddingDate: '2026-11-10T20:00:00+02:00',
 
-  // Paste the Google Apps Script "Web app" URL here to receive RSVPs
-  // in a Google Sheet (see README.md → "Connect the RSVP form").
-  rsvpEndpoint: '',
-
   musicVolume: 0.6,
 };
 
@@ -310,8 +306,9 @@ const introPetals = makeFalling($('#intro-petals'), PETALS_ONLY, 16000);
       return;
     }
 
-    if (!CONFIG.rsvpEndpoint) {
-      console.warn('RSVP endpoint is not set. See README.md → "Connect the RSVP form".');
+    const sb = window.SUPABASE_CONFIG || {};
+    if (!sb.url || !sb.anonKey) {
+      console.warn('Supabase is not set up. See README.md → "Connect the RSVP form".');
       setStatus('RSVP opens soon. Please try again later.', 'error');
       return;
     }
@@ -321,12 +318,17 @@ const introPetals = makeFalling($('#intro-petals'), PETALS_ONLY, 16000);
     setStatus('');
 
     try {
-      const res = await fetch(CONFIG.rsvpEndpoint, {
+      const res = await fetch(`${sb.url}/rest/v1/${sb.table}`, {
         method: 'POST',
-        body: new URLSearchParams({ fullname, message }),
+        headers: {
+          apikey: sb.anonKey,
+          Authorization: `Bearer ${sb.anonKey}`,
+          'Content-Type': 'application/json',
+          Prefer: 'return=minimal',
+        },
+        body: JSON.stringify({ full_name: fullname, message: message || null }),
       });
-      const data = await res.json().catch(() => ({ ok: res.ok }));
-      if (!data.ok) throw new Error(data.error || 'Request failed');
+      if (!res.ok) throw new Error(`Supabase ${res.status}`);
 
       form.reset();
       setStatus(`Thank you, ${fullname.split(' ')[0]}. Your RSVP was sent.`, 'ok');

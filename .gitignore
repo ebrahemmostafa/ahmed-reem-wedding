@@ -2,3 +2,6 @@
 .claude/
 .DS_Store
 Thumbs.db
+
+# local Supabase setup with the real passcode (never commit)
+supabase/*.local.sql

@@ -23,20 +23,25 @@ The design panels (2, 3, 5–9, 11) recreate the approved design exactly. Each o
 
 ## Things to fill in
 
-### Connect the RSVP form (about 5 minutes)
-RSVPs are saved to a Google Sheet. Until this is connected, the form shows "RSVP opens soon."
+### Connect the RSVP form to Supabase (about 5 minutes)
+RSVPs are saved in a Supabase table and listed on **`ahmed-reem-rsvp.html`**, which opens with a passcode. Until this is connected, the form shows "RSVP opens soon."
 
-1. Create a new Google Sheet, for example *Ahmed & Reem RSVP*.
-2. Open **Extensions → Apps Script**, delete the sample code, and paste in everything from [`rsvp/Code.gs`](rsvp/Code.gs). Save.
-3. Click **Deploy → New deployment** and choose the type **Web app**.
-   - *Execute as:* **Me**
-   - *Who has access:* **Anyone**
-4. Click **Deploy**, approve the permissions, and copy the **Web app URL**. It ends in `/exec`.
-5. In `js/main.js`, paste the URL into `CONFIG.rsvpEndpoint`:
-   ```js
-   rsvpEndpoint: 'https://script.google.com/macros/s/XXXX/exec',
-   ```
-6. Commit and push. Each RSVP becomes a row in the **RSVP** tab: *Time | Full name | Message*.
+1. Create a free project at [supabase.com](https://supabase.com).
+2. Open **SQL Editor → New query**, paste everything from [`supabase/setup.sql`](supabase/setup.sql), replace `CHANGE-ME` with the passcode for the RSVP page, and click **Run**. Don't commit a copy with the real passcode, because this repository is public. Files named `supabase/*.local.sql` are ignored by git for that reason.
+3. Go to **Project Settings → API** and copy the **Project URL** and the **anon / publishable** key into [`js/supabase-config.js`](js/supabase-config.js).
+4. Commit and push.
+
+**Who can see what:** guests can only *add* an RSVP. The table can't be read directly. The RSVP page asks Supabase for the list with the passcode, which is checked on the server against a bcrypt hash. After 10 wrong tries in 15 minutes it stops answering for 15 minutes. The anon key in the code can't read anyone's message.
+
+To change the passcode later, run this in the SQL Editor:
+```sql
+update public.rsvp_secret
+set passcode_hash = extensions.crypt('NEW-PASSCODE', extensions.gen_salt('bf'))
+where id = 1;
+```
+
+### The RSVP page
+Open `ahmed-reem-rsvp.html` (on GitHub Pages: `https://ebrahemmostafa.github.io/ahmed-reem-wedding/ahmed-reem-rsvp.html`) and enter the passcode. It shows every reply, newest first, with the time (Cairo), totals, a search box, a **Download CSV** button (opens correctly in Excel, Arabic included), and **Delete** for spam or duplicates. It refreshes every 30 seconds and stays unlocked until you tap **Lock** or close the tab.
 
 ## Publish with GitHub Pages
 In the repository, go to **Settings → Pages**. Under *Build and deployment*, choose **Deploy from a branch**, then select **main** and **/ (root)**. The site will be at:
@@ -49,8 +54,10 @@ In the repository, go to **Settings → Pages**. Under *Build and deployment*, c
 | --- | --- |
 | `index.html` | All content |
 | `css/style.css` | All styling |
-| `js/main.js` | Door intro, music, countdown, falling leaves, RSVP |
-| `rsvp/Code.gs` | Google Apps Script that writes RSVPs to a Sheet |
+| `js/main.js` | Door intro, music, countdown, falling leaves, RSVP form |
+| `js/supabase-config.js` | Supabase project URL and anon key (shared by both pages) |
+| `ahmed-reem-rsvp.html`, `js/rsvp-admin.js`, `css/rsvp.css` | The RSVP list page (passcode) |
+| `supabase/setup.sql` | Creates the RSVP table, the passcode check and the access rules |
 | `assets/video/door-open.mp4` | The design's door opening onto the names page (Veo 3.1 in Google Flow) |
 | `assets/img/door.jpg`, `monogram.png` | The closed door (the video's first frame) and the swash "AR" monogram |
 | `assets/audio/music.mp3` | Background music, looped |
