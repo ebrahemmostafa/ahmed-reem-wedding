@@ -31,7 +31,7 @@ RSVPs are saved in a Supabase table and listed on **`ahmed-reem-rsvp.html`**, wh
 3. Go to **Project Settings → API** and copy the **Project URL** and the **anon / publishable** key into [`js/supabase-config.js`](js/supabase-config.js).
 4. Commit and push.
 
-**Who can see what:** guests can only *add* an RSVP. The table can't be read directly. The RSVP page asks Supabase for the list with the passcode, which is checked on the server against a bcrypt hash. After 10 wrong tries from one device in 15 minutes (or 200 from everywhere), it stops answering for 15 minutes. The anon key in the code can't read anyone's message.
+**Who can see what:** guests can only *add* an RSVP. The table can't be read directly. The RSVP page asks Supabase for the list with the passcode, which is checked on the server against a bcrypt hash. Wrong tries are limited: 10 per device and 30 in total every 15 minutes, and 100 in total per day. Past that, the page stops answering until the window passes. If it ever stays locked for you, run `delete from public.rsvp_failed_attempts;` in the SQL Editor. The anon key in the code can't read anyone's message.
 
 To change the passcode later, run this in the SQL Editor:
 ```sql

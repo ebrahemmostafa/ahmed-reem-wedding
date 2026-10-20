@@ -37,7 +37,10 @@ values (1, extensions.crypt('CHANGE-ME', extensions.gen_salt('bf')))   -- ← yo
 on conflict (id) do update set passcode_hash = excluded.passcode_hash;
 
 -- Wrong-passcode log, used to lock out guessing:
--- 10 wrong tries per IP per 15 minutes, and 200 in total across all IPs.
+--   10 wrong tries per IP per 15 minutes,
+--   30 in total per 15 minutes, and 100 in total per day.
+-- If the page ever stays locked for you, clear it with:
+--   delete from public.rsvp_failed_attempts;
 create table if not exists public.rsvp_failed_attempts (
   at timestamptz not null default now(),
   ip text
@@ -60,15 +63,18 @@ begin
   -- One passcode check at a time, so parallel guesses can't slip past the counter.
   perform pg_advisory_xact_lock(hashtext('rsvp_passcode_ok'));
 
-  -- Client IP as forwarded to PostgREST (first address in x-forwarded-for).
-  v_ip := nullif(btrim(split_part(coalesce(
-            current_setting('request.headers', true)::json ->> 'x-forwarded-for', ''), ',', 1)), '');
+  -- Client IP: the right-most x-forwarded-for entry is the one added by
+  -- Supabase's own proxy; the left-most entries can be faked by the caller.
+  v_ip := nullif(btrim(regexp_replace(coalesce(
+            current_setting('request.headers', true)::json ->> 'x-forwarded-for', ''), '^.*,', '')), '');
 
-  delete from rsvp_failed_attempts where at < now() - interval '1 day';
+  delete from rsvp_failed_attempts where at < now() - interval '2 days';
   if (select count(*) from rsvp_failed_attempts
         where at > now() - interval '15 minutes' and ip is not distinct from v_ip) >= 10
      or (select count(*) from rsvp_failed_attempts
-        where at > now() - interval '15 minutes') >= 200 then
+        where at > now() - interval '15 minutes') >= 30
+     or (select count(*) from rsvp_failed_attempts
+        where at > now() - interval '1 day') >= 100 then
     return 'locked';
   end if;
 
